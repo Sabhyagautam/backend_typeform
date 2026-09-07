@@ -1,0 +1,29 @@
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# On Railway, use a persistent volume mounted at /app/data.
+# Locally, fall back to ./typeform.db in the backend folder.
+_DATA_DIR = os.environ.get("DATA_DIR", ".")
+os.makedirs(_DATA_DIR, exist_ok=True)
+
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{_DATA_DIR}/typeform.db"
+
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"check_same_thread": False},
+)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+
+def get_db():
+    """FastAPI dependency — yields a DB session and closes it when done."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
