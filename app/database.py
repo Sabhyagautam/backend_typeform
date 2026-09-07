@@ -3,8 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# On Railway, use a persistent volume mounted at /app/data.
-# Locally, fall back to ./typeform.db in the backend folder.
+# On Render, use a persistent disk mounted at /var/data.
+# On Railway, set DATA_DIR=/app/data.
+# Locally, falls back to ./typeform.db in the backend folder.
 _DATA_DIR = os.environ.get("DATA_DIR", ".")
 os.makedirs(_DATA_DIR, exist_ok=True)
 
