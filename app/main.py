@@ -18,7 +18,7 @@ app = FastAPI(title="Typeform Clone API", version="1.0.0")
 # Multiple origins can be separated by commas.
 # Falls back to allowing all origins if the var is not set (safe for dev/demo).
 # ---------------------------------------------------------------------------
-_raw = os.environ.get("ALLOWED_ORIGINS", "*")
+_raw = os.environ.get("ALLOWED_ORIGINS", "https://frontend-typeform-rose.vercel.app")
 if _raw == "*":
     allow_origins = ["*"]
 else:
